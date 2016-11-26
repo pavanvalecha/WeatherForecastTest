@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Weather Forecast</string>
+    <string name="current_text">Right Now</string>
+    <string name="current_summary">Current Summary</string>
+    <string name="current_temprature">Current Temprature</string>
+    <string name="current_temprature_feels">Temprature Feels like</string>
+    <string name="current_humidity">Humidity</string>
+
+
+    <string name="daily_text">Daily</string>
+
+    <string name="temprature_place_holder">25 \u00B0 F</string>
+    <string name="summary_place_holder">Clear</string>
+    <string name="humidity_place_holder">40% Humid</string>
+
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:text="@string/summary_place_holder"
+            android:gravity="center_vertical"
+            android:id="@+id/listItem_textView_daily_summary_value"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:text="@string/humidity_place_holder"
+            android:gravity="center_vertical"
+            android:id="@+id/listItem_textView_daily_humidity_value"
+            />
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
+        android:text="@string/temprature_place_holder"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:id="@+id/listItem_textView_daily_temprature_value"
+        />
+
+</LinearLayout>
