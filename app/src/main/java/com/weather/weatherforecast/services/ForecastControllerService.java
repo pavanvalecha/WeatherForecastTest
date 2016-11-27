@@ -19,11 +19,11 @@ public class ForecastControllerService {
     private ApiService apiService;
     Activity activityReference;
 
-    public ForecastControllerService(Activity callingActivityReference){
+    public ForecastControllerService(Activity callingActivityReference, String latLonStr){
         Log.d(getClass().getName(), "ForecastControllerService");
         activityReference = callingActivityReference;
         apiService = new ApiService(this);
-        apiService.execute("19.233784,73.160703");
+        apiService.execute(latLonStr);
     }
 
     public void setResponseAndConvertToModel(String responseString){

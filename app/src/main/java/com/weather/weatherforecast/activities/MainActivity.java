@@ -1,18 +1,27 @@
 package com.weather.weatherforecast.activities;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.weather.weatherforecast.R;
 import com.weather.weatherforecast.adapters.DailyForecastListAdapter;
 import com.weather.weatherforecast.models.WeatherForecastModel;
 import com.weather.weatherforecast.services.ForecastControllerService;
+import com.weather.weatherforecast.util.CommonUtilities;
+import com.weather.weatherforecast.util.GPSUtility;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,19 +32,25 @@ public class MainActivity extends AppCompatActivity {
     private static final long MIN_TIME_BW_UPDATES = 1;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
 
+    private String locationPermissions[] = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(getClass().getName(), "onCreate");
         setContentView(R.layout.activity_main);
         initUIViews();
-        forecastControllerService = new ForecastControllerService(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(getClass().getName(), "onStart");
+        if(CommonUtilities.isOnline(MainActivity.this)) {
+            requestLocationPermissions();
+        } else {
+            showOfflineAlert("No Connection available.. Please try again when connected!");
+        }
     }
 
     @Override
@@ -84,31 +99,62 @@ public class MainActivity extends AppCompatActivity {
         dailyForecastListAdapter.notifyDataSetChanged();
     }
 
-    public void getLocationValues(){
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+    public void requestLocationPermissions(){
+        Log.d(getClass().getName(), "requestLocationPermissions");
+        if (Build.VERSION.SDK_INT >= 23) {
+            if( MainActivity.this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    MainActivity.this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                requestPermissions( locationPermissions, 100);
+            } else {
+                getLatLongAndStartForecastControllerService();
+            }
+        } else {
+            getLatLongAndStartForecastControllerService();
+        }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES,
-                MIN_DISTANCE_CHANGE_FOR_UPDATES, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
+    }
 
-                    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d(getClass().getName(), "onRequestPermissionsResult");
+        for(int i = 0; i < permissions.length; i++) {
+            Log.d("Request Permission ", permissions[i]);
+            Log.d("Permission Results", ""+grantResults[i]);
+        }
+        if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.d("PermissionsResult","Permission Granted");
+            getLatLongAndStartForecastControllerService();
+        } else if(grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+            Log.d("PermissionsResult","Permission Denied");
+            Toast.makeText(MainActivity.this, "Location Permission Denied!", Toast.LENGTH_LONG).show();
+        }
+    }
 
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
+    private void getLatLongAndStartForecastControllerService(){
+        Log.d(getClass().getName(), "getLatLongAndStartForecastControllerService");
+        GPSUtility gpsUtility = new GPSUtility(MainActivity.this);
+        if(gpsUtility.canGetLocation()){
+            String latlongString = gpsUtility.getLatitude() + "," + gpsUtility.getLongitude();
+            Log.d(getClass().getName(), latlongString);
+            forecastControllerService = new ForecastControllerService(this, latlongString);
+        } else{
+            gpsUtility.showSettingsAlert();
+        }
+    }
 
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String provider) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String provider) {
-
-                    }
-                });
+    public void showOfflineAlert(String message){
+        final AlertDialog alertDialog = new AlertDialog.Builder(
+                MainActivity.this).create();
+        alertDialog.setTitle("Error!");
+        alertDialog.setMessage(message);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                finish();
+            }
+        });
+        alertDialog.show();
     }
 
 }
