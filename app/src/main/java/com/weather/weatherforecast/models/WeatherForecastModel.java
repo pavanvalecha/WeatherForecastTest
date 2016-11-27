@@ -84,7 +84,6 @@ public class WeatherForecastModel {
 
     public static WeatherForecastModel fromJSON(String responseStr) throws JSONException {
         WeatherForecastModel forecast = new WeatherForecastModel();
-
         JSONObject forecastJsonObj = new JSONObject(responseStr);
         forecast.setLatitude( forecastJsonObj.getDouble(FIELD_LATITUDE) );
         forecast.setLongitude( forecastJsonObj.getDouble(FIELD_LONGITUDE) );
@@ -93,7 +92,6 @@ public class WeatherForecastModel {
         forecast.setCurrentForecast( ForecastDataModel.fromJSON( forecastJsonObj.getString(FIELD_CURRENT_FORECAST ) ) );
         forecast.setHourlyForecast( HourlyForecastModel.fromJSON( forecastJsonObj.getString(FIELD_HOURLY_FORECAST ) ) );
         forecast.setDailyForecast( DailyForecastModel.fromJSON( forecastJsonObj.getString(FIELD_DAILY_FORECAST ) ) );
-
         return forecast;
     }
 

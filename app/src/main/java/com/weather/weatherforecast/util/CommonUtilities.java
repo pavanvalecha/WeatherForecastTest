@@ -3,7 +3,6 @@ package com.weather.weatherforecast.util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 /**
  * Created by Pawan on 23/07/2016.

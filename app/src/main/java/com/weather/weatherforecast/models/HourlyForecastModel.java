@@ -1,5 +1,9 @@
 package com.weather.weatherforecast.models;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -40,8 +44,19 @@ public class HourlyForecastModel {
         this.forecastDataModelArrayList = forecastDataModelArrayList;
     }
 
-    public static HourlyForecastModel fromJSON(String hourlyDataStr){
+    public static HourlyForecastModel fromJSON(String hourlyDataStr) throws JSONException {
         HourlyForecastModel hourlyForecast = new HourlyForecastModel();
+
+        ArrayList<ForecastDataModel> hourlyForecastDataModelArrayList = new ArrayList<ForecastDataModel>();;
+        JSONObject hourlyForecastJsonObj = new JSONObject(hourlyDataStr);
+        hourlyForecast.setIcon( hourlyForecastJsonObj.getString(FIELD_ICON) );
+        hourlyForecast.setSummary( hourlyForecastJsonObj.getString(FIELD_SUMMARY) );
+        JSONArray dailyForecastJsonObjJSONArray = hourlyForecastJsonObj.getJSONArray(FIELD_DATA);
+        for(int i = 0; i < dailyForecastJsonObjJSONArray.length(); i++){
+            hourlyForecastDataModelArrayList.add( ForecastDataModel.fromJSON(dailyForecastJsonObjJSONArray.get(i).toString()) );
+        }
+        hourlyForecast.setForecastDataModelArrayList(hourlyForecastDataModelArrayList);
+
         return hourlyForecast;
     }
 

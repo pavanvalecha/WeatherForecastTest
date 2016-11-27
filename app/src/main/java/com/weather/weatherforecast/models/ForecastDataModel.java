@@ -167,6 +167,8 @@ public class ForecastDataModel {
         currentForecast.setWindSpeed( currentforecastJsonObj.getDouble(FIELD_WINDSPEED) );
         currentForecast.setHumidity( currentforecastJsonObj.getDouble(FIELD_HUMIDITY) );
         currentForecast.setWindBearing( currentforecastJsonObj.getInt(FIELD_WINDBEARING));
+        currentForecast.setPrecipProbability( currentforecastJsonObj.getInt(FIELD_PRECIPPROBABILITY) );
+        currentForecast.setIcon( currentforecastJsonObj.getString(FIELD_ICON) );
 
         return currentForecast;
     }

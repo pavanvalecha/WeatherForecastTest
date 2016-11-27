@@ -284,8 +284,6 @@ public class ForecastDailyDataModel {
         forecastDailyData.setOzone( dailyForecastJsonObj.getDouble(FIELD_OZONE) );
         forecastDailyData.setTime( dailyForecastJsonObj.getLong(FIELD_TIME) );
 
-
-
         return forecastDailyData;
     }
 }

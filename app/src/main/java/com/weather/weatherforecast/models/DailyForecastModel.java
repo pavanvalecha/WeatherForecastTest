@@ -44,23 +44,18 @@ public class DailyForecastModel {
         this.forecastDataModelArrayList = forecastDataModelArrayList;
     }
 
-
     public static DailyForecastModel fromJSON(String dailyDataStr) throws JSONException {
         DailyForecastModel dailyForecast= new DailyForecastModel();
         ArrayList<ForecastDailyDataModel> forecastDataModelArrayList = new ArrayList<ForecastDailyDataModel>();;
-
         JSONObject dailyForecastJsonObj = new JSONObject(dailyDataStr);
         dailyForecast.setIcon( dailyForecastJsonObj.getString(FIELD_ICON) );
         dailyForecast.setSummary( dailyForecastJsonObj.getString(FIELD_SUMMARY) );
-
         JSONArray dailyForecastJsonObjJSONArray = dailyForecastJsonObj.getJSONArray(FIELD_DATA);
         for(int i = 0; i < dailyForecastJsonObjJSONArray.length(); i++){
             forecastDataModelArrayList.add( ForecastDailyDataModel.fromJSON(dailyForecastJsonObjJSONArray.get(i).toString()) );
         }
         dailyForecast.setForecastDataModelArrayList(forecastDataModelArrayList);
-
         return dailyForecast;
     }
-
 
 }

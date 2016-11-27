@@ -4,13 +4,10 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
     ListView dailyForecastListView;
     DailyForecastListAdapter dailyForecastListAdapter;
     ForecastControllerService forecastControllerService;
-    private static final long MIN_TIME_BW_UPDATES = 1;
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
 
     private String locationPermissions[] = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
 
