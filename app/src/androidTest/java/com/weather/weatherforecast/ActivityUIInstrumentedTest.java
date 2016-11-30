@@ -47,7 +47,7 @@ public class ActivityUIInstrumentedTest extends ActivityInstrumentationTestCase2
     }
 
     @Test
-    public void testSetText() throws Exception {
+    public void testSetTextAndAssert() throws Exception {
         currentSummaryTextView = (TextView) activity.findViewById(R.id.textView_current_summary_value);
         currentTempratureTextView = (TextView) activity.findViewById(R.id.textView_current_temprature_value);
         currentFeelsTempratureTextView = (TextView) activity.findViewById(R.id.textView_current_tempraturefeels_value);

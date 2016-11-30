@@ -26,14 +26,13 @@ public class ForecastControllerService {
         apiService.execute(latLonStr);
     }
 
-    public void setResponseAndConvertToModel(String responseString){
+    public WeatherForecastModel setResponseAndConvertToModel(String responseString){
         Log.d(getClass().getName(), "setResponseAndConvertToModel");
         try {
-            weatherForecast = WeatherForecastModel.fromJSON(responseString);
+            return WeatherForecastModel.fromJSON(responseString);
         } catch (JSONException e) {
-            e.printStackTrace();
+            return null;
         }
-        sendDataTOUI();
     }
 
     public WeatherForecastModel getWeatherForecast() {
@@ -46,8 +45,9 @@ public class ForecastControllerService {
         this.weatherForecast = weatherForecast;
     }
 
-    private void sendDataTOUI(){
+    public void setDataObjectAndSendTOUI(WeatherForecastModel weatherForecast){
         Log.d(getClass().getName(), "sendDataTOUI");
+        this.weatherForecast = weatherForecast;
         if(activityReference instanceof MainActivity){
             ((MainActivity)activityReference).setDataOnUI( getWeatherForecast() );
         }

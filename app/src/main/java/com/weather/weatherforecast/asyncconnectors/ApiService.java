@@ -36,7 +36,7 @@ public class ApiService extends AsyncTask<String, Integer, String > {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        controllerService.setResponseAndConvertToModel(result);
+        controllerService.setDataObjectAndSendTOUI( controllerService.setResponseAndConvertToModel(result) );
     }
 
 
